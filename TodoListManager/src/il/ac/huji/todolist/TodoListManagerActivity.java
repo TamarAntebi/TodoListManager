@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,21 +14,12 @@ import android.widget.ListView;
 
 public class TodoListManagerActivity extends Activity {
 	ArrayAdapter<Task> adapter;
-	Task toDel;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		 setContentView(R.layout.activity_todo_list_manager);
-		 final ListView listTasks = 
+		  ListView listTasks = 
 	        		(ListView)findViewById(R.id.lstTodoItems);
-		 listTasks.setOnItemClickListener(new OnItemClickListener() {
-		        public void onItemClick(AdapterView<?> parent, View view,
-		                int position, long id) {
-
-		       Object o = listTasks.getItemAtPosition(position);
-		       toDel=(Task) o;
-		       }
-		    });
 	        List<Task> tasks = new ArrayList<Task>();
 	        
 	        adapter = 
@@ -58,7 +46,10 @@ public class TodoListManagerActivity extends Activity {
     		break;
     	
     	case R.id.menuItemDelete:
-    		adapter.remove(toDel);
+    		  ListView listTasks = 
+      		(ListView)findViewById(R.id.lstTodoItems);
+    		  Task t=(Task) listTasks.getItemAtPosition(listTasks.getSelectedItemPosition());
+    		adapter.remove(t);
  
     		break;
     	}
