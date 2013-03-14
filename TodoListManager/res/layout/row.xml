@@ -10,6 +10,4 @@
         android:text="@string/large_text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-
 </LinearLayout>
