@@ -2,6 +2,9 @@ package il.ac.huji.todolist;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.graphics.Color;
@@ -19,18 +22,50 @@ public class TaskDisplayAdapter extends ArrayAdapter<Task> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		Task course = getItem(position);
+
+		Task task = getItem(position);
 		LayoutInflater inflater = LayoutInflater.from(getContext());
-		View view = inflater.inflate(R.layout.row, null);
-		TextView txtName = (TextView)view.findViewById(R.id.txtName);
-		txtName.setText(course._name);
-		if(position%2==0){
-			txtName.setTextColor(Color.RED);
+		View view = inflater.inflate(R.layout.tasklayout, null);
+		TextView txtName = (TextView)view.findViewById(R.id.txtTodoTitle);
+		txtName.setText(task._name);
+		TextView txtDate = (TextView)view.findViewById(R.id.txtTodoDueDate);
+		String today;
+		if(task._date==null){
+			today="No due date";
 		}
 		else{
-			txtName.setTextColor(Color.BLUE);
+			SimpleDateFormat  formatter = new SimpleDateFormat("dd/MM/yyyy");
+			today = formatter.format(task._date);
 		}
-		return view;
-	}
+		txtDate.setText(today);
+
+		Date d=new Date();
+		boolean red=false;
+		if(d.getYear()>task._date.getYear()){
+			red=true;
+		}
+		else if(d.getYear()==task._date.getYear()){
+			if(d.getMonth()>task._date.getMonth()){
+				red=true;
+			}
+			else if(d.getMonth()==task._date.getMonth()){
+				if(d.getDay()>task._date.getDay()){
+					red=true;
+				}
+			}
+		}
+
+		if(red==true){
+			txtDate.setTextColor(Color.RED);
+			txtName.setTextColor(Color.RED);
+		}
+	
+	//		if(position%2==0){
+	//			txtName.setTextColor(Color.RED);
+	//		}
+	//		else{
+	//			txtName.setTextColor(Color.BLUE);
+	//		}
+	return view;
+}
 }
