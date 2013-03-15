@@ -54,7 +54,7 @@ public class TodoListManagerActivity extends Activity {
 		Task t=adapter.getItem(selectedItemIndex);
 		menu.setHeaderTitle(t._name);
 		if(t._name.startsWith("Call ")){
-			menu.add(0,R.id.menuItemDeleteCall, 0, t._name);
+			menu.add(0,R.id.menuItemCall, 0, t._name);
 		}
 		
 	}
@@ -67,7 +67,7 @@ public class TodoListManagerActivity extends Activity {
 		case R.id.menuItemDelete:
 			adapter.remove(adapter.getItem(selectedItemIndex));
 			break;
-		case R.id.menuItemDeleteCall:
+		case R.id.menuItemCall:
 			Task t=adapter.getItem(selectedItemIndex);
 			String phone=t._name.replace("Call ", "tel:");
 			Intent dial = new Intent(Intent.ACTION_DIAL, 
