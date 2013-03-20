@@ -30,9 +30,6 @@ public class AddNewTodoItemActivity extends Activity{
 					resultIntent.putExtra("title", taskName);
 					Date taskDate=new Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
 					resultIntent.putExtra("dueDate",taskDate );
-//					resultIntent.putExtra("year",datePicker.getYear() - 1900);
-//					resultIntent.putExtra("month",datePicker.getMonth());
-//					resultIntent.putExtra("day",datePicker.getDayOfMonth());
 
 					setResult(RESULT_OK, resultIntent);
 					finish();

@@ -4,5 +4,5 @@
 	<item android:id="@+id/menuItemDelete"
         android:title="@string/delete_string" />
 	<item android:id="@+id/menuItemCall"
-        android:visible="false"></item>"
+	    android:title="init"/>
 </menu>

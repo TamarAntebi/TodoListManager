@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddNewTodoItemActivity"
+        <activity android:name="il.ac.huji.todolist.AddNewTodoItemActivity"
+            android:label="Add New Item"
             android:theme="@android:style/Theme.Dialog"/>
         
             

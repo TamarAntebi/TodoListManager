@@ -54,7 +54,11 @@ public class TodoListManagerActivity extends Activity {
 		Task t=adapter.getItem(selectedItemIndex);
 		menu.setHeaderTitle(t._name);
 		if(t._name.startsWith("Call ")){
-			menu.add(0,R.id.menuItemCall, 0, t._name);
+			menu.findItem(R.id.menuItemCall).setTitle(t._name);
+			
+		}
+		else{
+			menu.removeItem(R.id.menuItemCall);
 		}
 		
 	}
@@ -81,9 +85,6 @@ public class TodoListManagerActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == 1337 && resultCode == RESULT_OK) {
     		String taskName = data.getStringExtra("title");
-//    		int year=data.getIntExtra("year",2000);
-//    		int month=data.getIntExtra("month",1);
-//    		int day=data.getIntExtra("day",1);
     		Date taskDate=(Date) data.getSerializableExtra("dueDate");
 
     		adapter.add(new Task(taskName, taskDate));
@@ -97,17 +98,7 @@ public class TodoListManagerActivity extends Activity {
     		Intent intent = new Intent(this, AddNewTodoItemActivity.class);
     		startActivityForResult(intent, 1337);
     		
-//    		EditText taskName=(EditText)findViewById(R.id.edtNewItem);
-//    		adapter.add(new Task(String.valueOf(taskName.getText())));
     		break;
-    	
-//    	case R.id.menuItemDelete:
-//    		  ListView listTasks = 
-//      		(ListView)findViewById(R.id.lstTodoItems);
-//    		  Task t=(Task) listTasks.getItemAtPosition(listTasks.getSelectedItemPosition());
-//    		adapter.remove(t);
-// 
-//    		break;
     	}
     	return true;
     	
