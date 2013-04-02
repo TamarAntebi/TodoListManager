@@ -21,7 +21,6 @@ public class AddNewTodoItemActivity extends Activity{
 				EditText edtCourseName = (EditText)findViewById(R.id.edtNewItem);
 				String taskName = edtCourseName.getText().toString();
 				DatePicker datePicker=(DatePicker)findViewById(R.id.datePicker);
-				//				Date taskDate=new Date(datePicker.getYear() - 1900, datePicker.getMonth(), datePicker.getDayOfMonth());
 				if (taskName == null || "".equals(taskName)) {
 					setResult(RESULT_CANCELED);
 					finish();
