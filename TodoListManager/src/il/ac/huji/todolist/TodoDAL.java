@@ -2,29 +2,21 @@ package il.ac.huji.todolist;
 
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
-
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.ListView;
+
 
 public class TodoDAL {
 	Context _ctxt;
 	private SQLiteDatabase db;
-	private Cursor cursor;
-	private TaskDisplayAdapter adapter;
 	boolean delete=true;
 	protected boolean update;
 	public TodoDAL(Context context) { 
@@ -77,11 +69,12 @@ public class TodoDAL {
 						obj.put("due",t.getDueDate().getTime());
 						try {
 							obj.save();
+							update=true;
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						update=true;
+						
 					}
 				}
 			}
@@ -101,8 +94,6 @@ public class TodoDAL {
 
 	}
 	public boolean delete(ITodoItem todoItem) {
-	
-		
 		ParseQuery query = new ParseQuery("todo");
 		query.whereEqualTo("title", todoItem.getTitle());
 		delete=true;
