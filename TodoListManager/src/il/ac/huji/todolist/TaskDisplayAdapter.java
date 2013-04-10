@@ -37,12 +37,13 @@ public class TaskDisplayAdapter extends SimpleCursorAdapter {
 		TextView txtDate = (TextView)view.findViewById(R.id.txtTodoDueDate);
 		String today;
 		Long date=cursor.getLong(2);
-		if(date==-1){
+		if(cursor.isNull(2)){
 			today="No due date";
 			txtDate.setText(today);
 		}
 
 		else{
+			
 			Date d=new Date(date);
 			SimpleDateFormat  formatter = new SimpleDateFormat("dd/MM/yyyy");
 			today = formatter.format(d);

@@ -45,7 +45,9 @@ public class TodoListManagerActivity extends Activity {
 		listTasks.setAdapter(adapter);
 
 		todo=new TodoDAL(this);
-
+//		for (ITodoItem i : todo.all()) {
+//			System.out.println(i.getTitle());
+//		}
 
 	}
 

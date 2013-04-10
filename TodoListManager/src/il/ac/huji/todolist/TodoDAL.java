@@ -3,6 +3,9 @@ package il.ac.huji.todolist;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -21,40 +24,46 @@ public class TodoDAL {
 	protected boolean update;
 	public TodoDAL(Context context) { 
 		_ctxt=context;
-		Parse.initialize(_ctxt, "OYwh9gQOASbvVSHZXBxEVUn4BReESL9UlaE1PFVZ", "hAId94nymDkw7Q5AKTH5JUwDDEnHNM3Iurk526Xw");
+		Parse.initialize(_ctxt, _ctxt.getResources().getString(R.string.parseApplication),_ctxt.getResources().getString(R.string.clientKey) );
 		SqlHalper helper = new SqlHalper(_ctxt);
 		db = helper.getWritableDatabase();
 		ParseUser.enableAutomaticUser();
-		
-
 	}
 	public boolean insert(ITodoItem todoItem) { 
+		if(todoItem.getTitle()==null){
+			return false;
+		}
 		ParseObject parseObject = new ParseObject("todo");
 		parseObject.put("title", todoItem.getTitle());
-		parseObject.put("due", todoItem.getDueDate().getTime());
-		parseObject.saveInBackground();
+		
+		
 		ContentValues values = new ContentValues();
 		values.put("title", todoItem.getTitle());
-		if(!(todoItem.getDueDate().equals(null))){
+		if(!(todoItem.getDueDate()==null)){
+			parseObject.put("due", todoItem.getDueDate().getTime());
 			values.put("due", todoItem.getDueDate().getTime());
 		}
 		else{
-			values.put("due", -1);
+			parseObject.put("due",  JSONObject.NULL);
+			values.putNull("due");
 		}
+		parseObject.saveInBackground();
 		long succ=db.insert("todo", null, values);
 		if(succ==-1){
 			return false;
 		}
 		return true;
-
 	}
-	public boolean update( ITodoItem todoItem) { 
+	public boolean update( ITodoItem todoItem) {
+		if(todoItem.getTitle()==null){
+			return false;
+		}
 		final ITodoItem t=todoItem;
 		ParseQuery query = new ParseQuery("todo");
 		query.whereEqualTo("title", todoItem.getTitle());
 		update=true;
 		query.findInBackground(new FindCallback() {
-			
+
 			@Override
 			public void done(List<ParseObject> objects, ParseException arg1) {
 				if (arg1!=null){
@@ -67,14 +76,8 @@ public class TodoDAL {
 					}
 					for(ParseObject obj : objects){
 						obj.put("due",t.getDueDate().getTime());
-						try {
-							obj.save();
-							update=true;
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
+						obj.saveInBackground();
+						update=true;
 					}
 				}
 			}
@@ -87,18 +90,22 @@ public class TodoDAL {
 			values.put("due", -1);
 		}
 		int succ = db.update("todo",values , "title=?", new String[]{todoItem.getTitle()});
-		if(succ==-1){
+		if(succ<1){
 			return false;
 		}
 		return update;
 
 	}
 	public boolean delete(ITodoItem todoItem) {
+		//		return update(new Task(todoItem.getTitle(),new Date(2013-1900,3,10)));
+		if(todoItem.getTitle()==null){
+			return false;
+		}
 		ParseQuery query = new ParseQuery("todo");
 		query.whereEqualTo("title", todoItem.getTitle());
 		delete=true;
 		query.findInBackground(new FindCallback() {
-			
+
 			@Override
 			public void done(List<ParseObject> objects, ParseException arg1) {
 				if (arg1!=null){
@@ -112,7 +119,7 @@ public class TodoDAL {
 					for(ParseObject obj : objects){
 						try{
 							obj.delete();
-							
+
 						}catch(ParseException e){
 							e.printStackTrace();
 						}
@@ -120,30 +127,29 @@ public class TodoDAL {
 				}
 			}
 		});
-		
+
 		int succ = db.delete("todo","title=?",new String[]{todoItem.getTitle()});
-		if(succ==-1){
+		if(succ<1){
 			return false;
 		}
 		return delete;
-		
 
 	}
 	public List<ITodoItem> all() { 
 		ParseQuery query = new ParseQuery("todo");
 		List<ITodoItem> list = new ArrayList<ITodoItem>();
-			
+
 		try {
 			for (ParseObject i :query.find()){
 				list.add(new Task(i.getString("title"),new Date(i.getInt("due"))));
-				
+
 			}
-			
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 		return list;
 	}
 }

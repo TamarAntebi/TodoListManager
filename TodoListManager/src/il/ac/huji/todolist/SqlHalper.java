@@ -13,7 +13,7 @@ public class SqlHalper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("create table todo ( _id integer primary key autoincrement,"
-				+  " title text, due long );");
+				+  " title text, due integer );");
 	}
 
 	@Override
